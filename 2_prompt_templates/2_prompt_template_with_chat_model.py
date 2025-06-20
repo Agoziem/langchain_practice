@@ -1,19 +1,19 @@
 from dotenv import load_dotenv
 from langchain.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Load environment variables from .env
 load_dotenv()
 
 # Create a ChatOpenAI model
-model = ChatOpenAI(model="gpt-4o")
+model = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
 
 # PART 1: Create a ChatPromptTemplate using a template string
 print("-----Prompt from Template-----")
-template = "Tell me a joke about {topic}."
+template = "Tell me a 5 lines joke about {topic}."
 prompt_template = ChatPromptTemplate.from_template(template)
 
-prompt = prompt_template.invoke({"topic": "cats"})
+prompt = prompt_template.invoke({"topic": "dogs"})
 result = model.invoke(prompt)
 print(result.content)
 
@@ -22,6 +22,7 @@ print("\n----- Prompt with Multiple Placeholders -----\n")
 template_multiple = """You are a helpful assistant.
 Human: Tell me a {adjective} short story about a {animal}.
 Assistant:"""
+
 prompt_multiple = ChatPromptTemplate.from_template(template_multiple)
 prompt = prompt_multiple.invoke({"adjective": "funny", "animal": "panda"})
 
@@ -31,10 +32,10 @@ print(result.content)
 # PART 3: Prompt with System and Human Messages (Using Tuples)
 print("\n----- Prompt with System and Human Messages (Tuple) -----\n")
 messages = [
-    ("system", "You are a comedian who tells jokes about {topic}."),
-    ("human", "Tell me {joke_count} jokes."),
+    ("system", "You are a teacher who teaches {subject} to students."),
+    ("human", "give me an outline for a lesson on {topic}"),
 ]
 prompt_template = ChatPromptTemplate.from_messages(messages)
-prompt = prompt_template.invoke({"topic": "lawyers", "joke_count": 3})
+prompt = prompt_template.invoke({"subject": "math", "topic": "fractions"})
 result = model.invoke(prompt)
 print(result.content)
