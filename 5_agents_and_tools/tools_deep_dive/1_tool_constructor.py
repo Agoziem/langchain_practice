@@ -3,9 +3,10 @@
 # Import necessary libraries
 from langchain import hub
 from langchain.agents import AgentExecutor, create_tool_calling_agent
-from langchain.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 from langchain_core.tools import StructuredTool, Tool
-from langchain_openai import ChatOpenAI
+# from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 
 # Functions for the tools
@@ -56,7 +57,9 @@ tools = [
 ]
 
 # Initialize a ChatOpenAI model
-llm = ChatOpenAI(model="gpt-4o")
+# llm = ChatOpenAI(model="gpt-4o")
+llm =  ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+
 
 # Pull the prompt template from the hub
 prompt = hub.pull("hwchase17/openai-tools-agent")
@@ -78,10 +81,10 @@ agent_executor = AgentExecutor.from_agent_and_tools(
 
 # Test the agent with sample queries
 response = agent_executor.invoke({"input": "Greet Alice"})
-print("Response for 'Greet Alice':", response)
+print("Response for 'Greet Alice':", response.get("output"))
 
 response = agent_executor.invoke({"input": "Reverse the string 'hello'"})
-print("Response for 'Reverse the string hello':", response)
+print("Response for 'Reverse the string hello':", response.get("output"))
 
-response = agent_executor.invoke({"input": "Concatenate 'hello' and 'world'"})
-print("Response for 'Concatenate hello and world':", response)
+response = agent_executor.invoke({"input": "Concatenate 'hello', 'world' and 'thanks'"})
+print("Response for 'Concatenate hello and world':", response.get("output"))

@@ -47,7 +47,7 @@ contextualize_q_system_prompt = (
 contextualize_q_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", contextualize_q_system_prompt),
-        MessagesPlaceholder("chat_history"),
+        ("placeholder", "{chat_history}"),
         ("human", "{input}"),
     ]
 )
@@ -75,7 +75,7 @@ qa_system_prompt = (
 qa_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", qa_system_prompt),
-        MessagesPlaceholder("chat_history"),
+        ("placeholder", "{chat_history}"),
         ("human", "{input}"),
     ]
 )
